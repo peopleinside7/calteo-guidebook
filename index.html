@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>#칼퇴 솔루션 실습 가이드북</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700;800&display=swap">
+<style>
+
+:root{
+  --ink:#191919; --sub:#6b6b6b; --line:#e8e6e1; --bg:#ffffff; --paper:#faf9f7;
+  --accent:#6C5CE7; --accent-soft:#f1effd; --ok:#0aa574;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Gothic A1','Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  font-weight:400; color:var(--ink); background:var(--bg); line-height:1.65; font-size:15px;
+}
+/* ---------- layout ---------- */
+.wrap{display:flex; min-height:100vh;}
+nav{
+  width:300px; flex-shrink:0; border-right:1px solid var(--line); background:var(--paper);
+  position:sticky; top:0; height:100vh; overflow-y:auto; padding:28px 0 40px;
+}
+main{flex:1; min-width:0; max-width:860px; padding:48px 56px 120px; margin:0 auto;}
+/* ---------- nav ---------- */
+.brand{padding:0 24px 20px; border-bottom:1px solid var(--line); margin-bottom:14px;}
+.brand .t1{font-weight:800; font-size:17px; letter-spacing:-0.02em;}
+.brand .t1 em{color:var(--accent); font-style:normal;}
+.brand .t2{font-size:12px; color:var(--sub); margin-top:5px;}
+.navgrp{padding:10px 14px 2px;}
+.navgrp h4{
+  font-size:11px; font-weight:700; color:var(--sub); letter-spacing:.08em;
+  padding:8px 10px 6px; text-transform:uppercase;
+}
+nav a{
+  display:flex; align-items:baseline; gap:8px; padding:6px 10px; border-radius:8px;
+  color:var(--ink); text-decoration:none; font-size:13.5px; font-weight:500;
+}
+nav a .pg{
+  flex-shrink:0; font-size:11px; font-weight:700; color:var(--accent);
+  min-width:34px; text-align:right; font-variant-numeric:tabular-nums;
+}
+nav a:hover{background:#f0eeea;}
+nav a.on{background:var(--accent-soft); color:var(--accent);}
+nav a.on .pg{color:var(--accent);}
+/* ---------- header ---------- */
+header.hero{margin-bottom:56px;}
+header.hero .kicker{font-size:13px; font-weight:600; color:var(--accent); letter-spacing:.06em;}
+header.hero h1{font-size:34px; font-weight:800; letter-spacing:-0.03em; line-height:1.25; margin:10px 0 14px;}
+header.hero h1 em{color:var(--accent); font-style:normal;}
+header.hero .meta{color:var(--sub); font-size:13.5px;}
+header.hero .meta b{color:var(--ink); font-weight:600;}
+.toolbar{margin-top:22px; display:flex; gap:10px; flex-wrap:wrap;}
+.btn{
+  font-family:inherit; font-size:13px; font-weight:600; cursor:pointer; border-radius:9px;
+  padding:9px 16px; border:1px solid var(--line); background:var(--bg); color:var(--ink);
+}
+.btn:hover{border-color:#cfcbc2;}
+.btn.primary{background:var(--ink); border-color:var(--ink); color:#fff;}
+.btn.primary:hover{background:#000;}
+.notice{
+  margin-top:26px; padding:14px 18px; background:var(--paper); border:1px solid var(--line);
+  border-radius:12px; font-size:13.5px; color:var(--sub);
+}
+.notice b{color:var(--ink); font-weight:600;}
+/* ---------- sections ---------- */
+.grp-title{
+  margin:64px 0 8px; font-size:13px; font-weight:700; color:var(--accent); letter-spacing:.08em;
+}
+.grp-title:first-of-type{margin-top:0;}
+section.ex{padding:30px 0 6px; border-top:1px solid var(--line); margin-top:22px; scroll-margin-top:24px;}
+.ex-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:8px;}
+.badge{
+  font-size:11.5px; font-weight:700; color:#fff; background:var(--ink);
+  border-radius:6px; padding:3px 9px; letter-spacing:.03em;
+}
+.badge.acc{background:var(--accent);}
+.pgref{font-size:12px; font-weight:600; color:var(--sub);}
+section.ex h2{font-size:21px; font-weight:700; letter-spacing:-0.02em; margin:4px 0 10px;}
+section.ex .desc{color:#3d3d3d; font-size:14.5px; margin-bottom:16px; max-width:640px;}
+.steps{margin:0 0 16px; padding-left:0; list-style:none; counter-reset:st;}
+.steps li{
+  counter-increment:st; position:relative; padding:2px 0 10px 34px; font-size:14px; color:#333;
+}
+.steps li::before{
+  content:counter(st); position:absolute; left:0; top:3px; width:22px; height:22px;
+  border-radius:50%; background:var(--accent-soft); color:var(--accent);
+  font-size:11.5px; font-weight:700; display:flex; align-items:center; justify-content:center;
+}
+/* ---------- prompt card ---------- */
+.prompt{
+  position:relative; background:var(--paper); border:1px solid var(--line);
+  border-radius:14px; padding:18px 20px 20px; margin:0 0 14px;
+}
+.prompt .plabel{
+  font-size:11.5px; font-weight:700; color:var(--sub); letter-spacing:.05em; margin-bottom:10px;
+  padding-right:96px;
+}
+.prompt pre{
+  font-family:inherit; font-size:14px; line-height:1.75; white-space:pre-wrap;
+  word-break:keep-all; overflow-wrap:break-word; color:#242424;
+}
+.copybtn{
+  position:absolute; top:12px; right:12px; font-family:inherit;
+  font-size:12px; font-weight:600; cursor:pointer;
+  border:1px solid var(--line); background:#fff; color:var(--ink);
+  border-radius:8px; padding:6px 12px;
+}
+.copybtn:hover{border-color:var(--accent); color:var(--accent);}
+.copybtn.done{background:var(--ok); border-color:var(--ok); color:#fff;}
+.tip{
+  font-size:13px; color:var(--sub); background:none; padding:2px 0 8px;
+}
+.tip b{color:var(--accent); font-weight:600;}
+.warn{
+  font-size:13px; color:#a33; background:#fdf3f2; border:1px solid #f3ddda;
+  border-radius:10px; padding:10px 14px; margin:4px 0 12px;
+}
+footer{margin-top:80px; padding-top:20px; border-top:1px solid var(--line); font-size:12.5px; color:var(--sub);}
+/* ---------- toast ---------- */
+#toast{
+  position:fixed; bottom:28px; left:50%; transform:translate(-50%,20px); opacity:0;
+  background:var(--ink); color:#fff; font-size:13px; font-weight:600;
+  padding:10px 20px; border-radius:99px; transition:.25s; pointer-events:none; z-index:99;
+}
+#toast.show{opacity:1; transform:translate(-50%,0);}
+/* ---------- responsive ---------- */
+#navToggle{display:none;}
+@media (max-width:900px){
+  .wrap{display:block;}
+  nav{position:fixed; left:0; top:0; z-index:50; transform:translateX(-100%); transition:.25s; width:290px; box-shadow:0 0 40px rgba(0,0,0,.12);}
+  nav.open{transform:none;}
+  #navToggle{
+    display:block; position:fixed; top:14px; left:14px; z-index:60;
+    background:var(--ink); color:#fff; border:none; border-radius:10px;
+    font-family:inherit; font-size:13px; font-weight:600; padding:9px 14px; cursor:pointer;
+  }
+  main{padding:76px 22px 90px;}
+}
+@media print{ nav,#navToggle,.toolbar,.copybtn{display:none;} main{max-width:none; padding:0;} }
+</style>
+</head>
+<body>
+<button id="navToggle">☰ 목차</button>
+<div class="wrap">
+
+<nav id="sidebar">
+  <div class="brand">
+    <div class="t1">생성형 AI로 끝내는 <em>#칼퇴</em> 솔루션</div>
+    <div class="t2">실습 가이드북 · 안성상공회의소 · 2026. 9. 2.</div>
+  </div>
+  <div id="tocRoot"></div>
+</nav>
+
+<main id="content">
+
+<header class="hero">
+  <div class="kicker">HANDS-ON GUIDEBOOK</div>
+  <h1>생성형 AI로 끝내는 <em>#칼퇴</em> 솔루션<br>실습 가이드북</h1>
+  <div class="meta"><b>2026. 9. 2. (수)</b> · 안성상공회의소 · 강사 <b>홍광준</b> (AI 혁신 컨설턴트)</div>
+  <div class="toolbar">
+    <button class="btn primary" onclick="downloadAllMd()">전체 프롬프트 .md 다운로드</button>
+    <button class="btn" onclick="window.print()">인쇄 / PDF 저장</button>
+  </div>
+  <div class="notice">
+    이 가이드북은 강의안 중 <b>실습 페이지만</b> 모은 참조 자료입니다. 왼쪽 목차의 페이지 번호는 강의안(v3.1)의
+    슬라이드 번호와 같습니다. 각 프롬프트는 <b>[복사]</b> 버튼으로 복사한 뒤 ChatGPT에 붙여넣고,
+    <b>[○○○] 대괄호 부분만 본인 상황으로</b> 바꿔 쓰세요.
+  </div>
+</header>
+
+<!-- ================= 1교시 ================= -->
+<div class="grp-title" data-grp="1교시 · 오리엔테이션 & 생성형 AI 이해">1교시 · 오리엔테이션 &amp; 생성형 AI 이해</div>
+
+<section class="ex" id="p6" data-pg="6" data-title="패들렛 자기소개 올리기" data-badge="실습 1">
+  <div class="ex-head"><span class="badge acc">실습 1</span><span class="pgref">강의안 p.6</span></div>
+  <h2>패들렛에 자기소개를 올려주세요</h2>
+  <p class="desc">오늘 하루 모든 실습 결과물은 패들렛에 모입니다. 몸풀기로 자기소개 카드를 먼저 올려봅니다.</p>
+  <ol class="steps">
+    <li>오픈채팅방 공지의 패들렛 링크로 접속</li>
+    <li>우측 하단 <b>[ + ]</b> 버튼 클릭</li>
+    <li>4줄 입력 — ① 이름 ② 소속(회사·부서) ③ 이메일 ④ 한 줄 소개</li>
+    <li><b>게시</b> 클릭</li>
+  </ol>
+  <div class="prompt">
+    <div class="plabel">작성 예시 (강사 카드)</div>
+    <pre>홍광준
+대한상공회의소 경기인력개발원
+starkj79@gmail.com
+"오늘 여러분의 퇴근을 앞당기러 왔습니다."</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p37" data-pg="37" data-title="완성형 프롬프트로 웹사이트 만들기" data-badge="실습 2">
+  <div class="ex-head"><span class="badge acc">실습 2</span><span class="pgref">강의안 p.37</span></div>
+  <h2>이 웹사이트를 한 번에 만든 프롬프트</h2>
+  <p class="desc">강의 중 시연한 "3대 AI 비교 웹사이트"를 만든 실제 프롬프트입니다. 여러 번 주고받은 대화를 하나의 완성형 프롬프트로 되돌린 것 — 역할·맥락·목표·형식이 다 들어가면 이렇게 한 번에 나옵니다.</p>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 웹사이트 제작</div>
+    <pre>너는 30년 경력의 UX/UI 디자이너이자 웹개발자, 기업교육 전문가, AI 리터러시 강사다.
+
+나는 직장인을 대상으로 생성형 AI 활용 교육을 진행한다. 이번 교육에서 사용할 수 있도록 ChatGPT · Google Gemini · Anthropic Claude 3가지 AI를 비교하고 실제 업무에 어떻게 활용하는지를 보여주는 완성도 높은 웹사이트를 html로 제작해줘.
+
+단순한 기능 소개 사이트가 아니라, 실제 회사 업무에 AI를 적용하는 방법을 이해시키는 AI 리터러시 교육용 웹사이트로 만들어라. 핵심 메시지는 "어떤 AI가 가장 좋은가"가 아니라 "어떤 업무에 어떤 AI를 사용해야 하는가"이다.
+
+디자인은 다크 모드 · 미니멀 · 기업용. ChatGPT는 Green, Gemini는 Blue, Claude는 Orange. 단, 위 내용을 사실처럼 단정하지 말고 웹 검색으로 현재 공식 기능인지 확인한 뒤 최신 정보로 수정한다.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<!-- ================= 2교시 ================= -->
+<div class="grp-title" data-grp="2교시 · ChatGPT 기본 사용법">2교시 · ChatGPT 기본 사용법</div>
+
+<section class="ex" id="p131" data-pg="131" data-title="ChatGPT 가입하기" data-badge="실습 3">
+  <div class="ex-head"><span class="badge acc">실습 3</span><span class="pgref">강의안 p.131</span></div>
+  <h2>가입부터 첫 화면까지, 3분</h2>
+  <p class="desc">chatgpt.com 접속 — Chrome 브라우저를 권장합니다(웹검색·캔버스·이미지 등 모든 기능 호환). 이미 계정이 있으면 로그인 상태만 확인하세요.</p>
+  <ol class="steps">
+    <li><b>chatgpt.com</b> 접속 — 회사 메일은 IT 정책을 먼저 확인, 확실하지 않으면 개인 Gmail 권장</li>
+    <li><b>Google 계정으로 로그인</b> — 원클릭으로 가입 완료</li>
+    <li>환영 메시지 확인 — 바로 대화 시작</li>
+  </ol>
+  <p class="tip"><b>참고</b> — 2단계 인증(2FA)과 데이터 학습 제외 설정은 마지막 시간(보안)에 다 함께 설정합니다.</p>
+</section>
+
+<section class="ex" id="p135" data-pg="135" data-title="첫 대화 프롬프트" data-badge="실습 4">
+  <div class="ex-head"><span class="badge acc">실습 4</span><span class="pgref">강의안 p.135</span></div>
+  <h2>첫 대화 — 복사해서 붙여넣기만 하세요</h2>
+  <p class="desc">[회사명]과 [직무]만 본인 것으로 바꾸세요. 형식을 지정했기 때문에 답이 깔끔하게 정리되어 나옵니다.</p>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 첫 대화</div>
+    <pre>안녕! 나는 [회사명]에서 [직무]를 하는 직장인이야.
+오늘부터 너랑 함께 일하려고 해.
+
+먼저, 너의 핵심 능력 5가지를 이해하기 쉽게 설명해줘.
+그리고 나에게 어떤 도움을 줄 수 있을지 추천해줘.
+
+[형식]
+1. 핵심 능력 5가지 (이모지 포함)
+2. 내 직무 맞춤 활용 사례 3가지
+3. 내일부터 시도할 첫 액션 1가지</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p151" data-pg="151" data-title="이미지 인식 — 손금 보고서" data-badge="실습 5">
+  <div class="ex-head"><span class="badge acc">실습 5</span><span class="pgref">강의안 p.151</span></div>
+  <h2>손금을 찍어 올리면, 보고서가 나옵니다</h2>
+  <p class="desc">지금 손바닥을 찍어 사진을 첨부하고 아래 프롬프트를 입력하세요. 파일 첨부 + 형식 지정(인포그래픽) 한 줄이 결과물의 모양을 결정합니다.</p>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 손바닥 사진 첨부 후</div>
+    <pre>제 손을 바탕으로 완전한 손금 풀이 가이드를 인포그래픽으로 만들어 주세요. 손바닥을 분석하세요. 가이드의 스타일은 깔끔하고 미니멀하게, 얇은 선, 둥근 카드, 전체적으로 매우 고급스럽게 보이도록 하세요. 손금 풀이에 집중하세요. 제 주요 선들의 간단한 흑백 윤곽을 작은 작품처럼 만드세요. 최선을 다해 주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <p class="tip"><b>주의</b> — 재미로만 보세요. AI의 결과는 사실이 아니라 초안입니다.</p>
+</section>
+
+<section class="ex" id="p153" data-pg="153" data-title="미션 2종 — 웹검색·이미지 인식" data-badge="실습 6">
+  <div class="ex-head"><span class="badge acc">실습 6</span><span class="pgref">강의안 p.153</span></div>
+  <h2>미션 2종 — 웹검색과 이미지 인식</h2>
+  <p class="desc">배운 기능을 각자의 업무로 바로 옮겨 봅니다. 두 미션을 모두 마치면 결과를 캡처해서 패들렛 「2교시 · 미션 2종」 섹션에 올려주세요. (① 10분 ② 10분 ③ 8분)</p>
+  <div class="prompt">
+    <div class="plabel">미션 ① · 웹검색 켜고 입력</div>
+    <pre>우리 업종 관련 오늘 주요 뉴스 3줄 요약</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <div class="prompt">
+    <div class="plabel">미션 ② · 사진 1장 촬영해 첨부 후 입력</div>
+    <pre>이 사진을 분석해서 인포그래픽 보고서로 만들어줘</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <p class="tip"><b>팁</b> — 막히면 손을 들어 주세요. 무료 계정에서 이미지 생성이 막히면 강사 화면으로 함께 확인합니다.</p>
+</section>
+
+<!-- ================= 3교시 ================= -->
+<div class="grp-title" data-grp="3교시 · 프롬프트 엔지니어링 (PTCF)">3교시 · 프롬프트 엔지니어링 (PTCF)</div>
+
+<section class="ex" id="p171" data-pg="171" data-title="PTCF 워크시트 — 내 업무로" data-badge="실습 7">
+  <div class="ex-head"><span class="badge acc">실습 7</span><span class="pgref">강의안 p.171</span></div>
+  <h2>PTCF 워크시트 — 내 업무로 바꿔보기</h2>
+  <p class="desc">평소 하는 업무 1가지를 골라 P·T·C·F 네 칸을 채우고 실행합니다. 마음에 안 들면 역질문법으로 다시 시킵니다. 제출 — 패들렛 「3교시 · PTCF 워크시트」 · 형식 「이름 / 업무 / 내가 쓴 프롬프트 / 결과 캡처」</p>
+  <ol class="steps">
+    <li>업무 상황 고르기 — 주간보고 · 거래처 회신 · 회의록 등 (3분)</li>
+    <li>P / T / C / F 네 칸 채우기 (8분)</li>
+    <li>실행 → 역질문법으로 재실행 (8분)</li>
+    <li>패들렛 업로드 (6분)</li>
+  </ol>
+  <div class="prompt">
+    <div class="plabel">템플릿 · PTCF 네 칸 채우기</div>
+    <pre>P (Persona · 역할) : 당신은 [                    ]입니다.
+T (Task · 목표)    : [                    ]를 작성해 주세요.
+C (Context · 맥락) : 상황은 [                    ]입니다. 대상은 [        ]입니다.
+F (Format · 형식)  : [구성/순서/분량/어조]로 작성해 주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <p class="tip"><b>배포 자료</b> — 「나만의 글쓰기 톤 프롬프트」: 역할·톤앤매너·글의 구성·실행 지침 4블록 완성형 템플릿. 카드 앞면을 보고 자기 회사 버전으로 고쳐 쓰세요.</p>
+</section>
+
+<section class="ex" id="p172" data-pg="172" data-title="노트북LM 사용해보기" data-badge="실습 7-1">
+  <div class="ex-head"><span class="badge acc">실습 7-1</span><span class="pgref">강의안 p.172</span></div>
+  <h2>노트북LM 사용해보기</h2>
+  <p class="desc">notebook.google.com 접속 → <b>소스 추가</b>에서 아래처럼 자료를 검색해 추가합니다. 필요 없는 자료는 체크 해제하세요.</p>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 소스 추가(웹 검색)</div>
+    <pre>2026년 대한민국 하반기 주식동향 관련자료를 찾아줘</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<!-- ================= 4교시 ================= -->
+<div class="grp-title" data-grp="4교시 · 업무 문서 작성">4교시 · 업무 문서 작성</div>
+
+<section class="ex" id="p183" data-pg="183" data-title="보도자료 ① — 프롬프트만" data-badge="실습 8-1">
+  <div class="ex-head"><span class="badge acc">실습 8-1</span><span class="pgref">강의안 p.183</span></div>
+  <h2>보도자료 ① — 프롬프트만 (SKILL 1)</h2>
+  <p class="desc">PTCF를 한 문단으로 녹여 넣은 기본형입니다. 장점 — 빠르게 초안 생성, 시작점으로 좋음. 단점 — 디테일·회사 문체 반영이 어려움.</p>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 보도자료 기본형</div>
+    <pre>당신은 기관의 보도자료 작성자입니다. 기관이 신규 생성형 AI 기반 서비스를 발표하게 되었고, 이를 외부 언론에 알리고자 합니다. 핵심 정보, 기대 효과, 기관장 인용 등을 포함한 보도자료를 작성해주세요. 헤드라인, 리드문, 본문, 문의처 순으로 문어체를 사용하고 간결한 정보 중심 문장으로 작성해 주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p184" data-pg="184" data-title="보도자료 ② — 첨부파일 활용" data-badge="실습 8-2">
+  <div class="ex-head"><span class="badge acc">실습 8-2</span><span class="pgref">강의안 p.184</span></div>
+  <h2>보도자료 ② — 첨부파일 활용 (SKILL 2)</h2>
+  <p class="desc">📎 우리 회사 기존 보도자료 1건을 첨부한 뒤 입력합니다. "이 스타일로" 한 마디가 우리 회사 문서를 만듭니다.</p>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 기존 보도자료 첨부 후</div>
+    <pre>당신은 기관의 보도자료 작성자입니다.
+기관이 신규 생성형 AI 기반 서비스를 발표하게 되었고, 이를 외부 언론에 알리고자 합니다.
+첨부파일을 확인하고 첨부파일 스타일로 보도자료를 작성해 주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p185" data-pg="185" data-title="보도자료 ③ — 단계별 작성" data-badge="실습 8-3">
+  <div class="ex-head"><span class="badge acc">실습 8-3</span><span class="pgref">강의안 p.185</span></div>
+  <h2>보도자료 ③ — 단계별 작성 (SKILL 3)</h2>
+  <p class="desc">리드 문단이 만족스러울 때까지 반복하세요 — 본문의 품질은 리드 문단의 품질을 그대로 따라갑니다. 중요한 문서일수록 앞부분에 시간을 쓰면 뒤가 저절로 좋아집니다.</p>
+  <div class="prompt">
+    <div class="plabel">1단계 · 리드문단 먼저</div>
+    <pre>첨부파일 스타일을 참고해서, 생성형 AI 서비스 출시 관련 리드문단을 작성해 주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <div class="prompt">
+    <div class="plabel">2단계 · 리드문단 다듬기</div>
+    <pre>리드문단을 기반으로, 공공기관의 혁신 이미지를 강조할 수 있도록 긍정적이고 홍보 효과가 높은 스타일로 다시 작성해 주세요. 객관성을 유지하되, 서비스의 기대효과와 차별점을 명확하게 부각해 주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <div class="prompt">
+    <div class="plabel">3단계 · 리드문단이 만족스러워지면</div>
+    <pre>나머지 보도자료를 작성해 주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p186" data-pg="186" data-title="임원 말씀자료 · 개회사" data-badge="실습 9">
+  <div class="ex-head"><span class="badge acc">실습 9</span><span class="pgref">강의안 p.186</span></div>
+  <h2>임원 말씀자료 · 개회사</h2>
+  <p class="desc">"3분 분량"처럼 시간을 지정하면 길이가 정확히 맞춰집니다. 중소기업 버전 — 창립기념일 사장님 인사말 · 신입사원 환영사 · 거래처 감사 인사 · 송년회/시무식 인사말로 바꿔 쓰세요.</p>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 개회사</div>
+    <pre>당신은 기관장 또는 사회자의 말씀자료를 작성하는 담당자입니다.
+공공기관 대상 생성형 AI 실습 워크숍 개회 발언문이 필요합니다.
+3분 분량의 따뜻한 개회사(워크숍 취지, 기대 효과 포함)를 작성해 주세요.
+구어체를 사용하고 단락 구분을 해 주세요. 따뜻하고 격려하는 분위기, 행사에 어울리는 친근한 말투로 작성해 주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p187" data-pg="187" data-title="비즈니스 이메일 3종" data-badge="실습 10">
+  <div class="ex-head"><span class="badge acc">실습 10</span><span class="pgref">강의안 p.187</span></div>
+  <h2>비즈니스 이메일 3종</h2>
+  <p class="desc">중소기업 재직자가 가장 자주 쓰는 세 가지 유형입니다. 톤 지정(자연스러운/객관적인/정중한)이 핵심입니다.</p>
+  <div class="prompt">
+    <div class="plabel">① 자료 요청</div>
+    <pre>재무팀으로부터 2분기 매출 데이터(제품별, 지역별)를 가능한 빠른 시일 내(2일 이내)에 제공 요청하는 메일을 작성해줘. 업무적인 요청이지만 같은 회사 동료에게 부탁하는 자연스러운 톤으로.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <div class="prompt">
+    <div class="plabel">② 지연 보고</div>
+    <pre>XX 프로젝트 주간 진행 사항을 팀장님께 보고하는 메일을 작성해줘. 전체 일정 대비 10% 진행 지연이 발생했고 대응 방안을 함께 보고해야 해. 간결하고 사실 중심의 전문적·객관적인 어조로 작성해줘.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <div class="prompt">
+    <div class="plabel">③ 공식 안내</div>
+    <pre>전 직원 대상 교육 안내 메일을 작성해줘. 일정·대상·신청 방법을 포함하고, 제목/인삿말/본문/마무리 인사로 구성해줘. 정중한 비즈니스 톤으로.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p190" data-pg="190" data-title="회의록 자동화 — 클로바노트+ChatGPT" data-badge="실습 11">
+  <div class="ex-head"><span class="badge acc">실습 11</span><span class="pgref">강의안 p.190</span></div>
+  <h2>회의록 자동화 — 클로바노트 + ChatGPT</h2>
+  <p class="desc">배포해 드린 회의 녹취 텍스트로 지금 바로 만들어 보세요.</p>
+  <ol class="steps">
+    <li>스마트폰으로 회의를 녹음합니다</li>
+    <li>클로바노트(clovanote.naver.com)에 올려 텍스트로 변환합니다</li>
+    <li>변환된 텍스트를 ChatGPT에 첨부합니다</li>
+    <li>아래 프롬프트로 회의록을 완성합니다</li>
+  </ol>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 녹취 텍스트 첨부 후</div>
+    <pre>당신은 회의록 작성 담당자입니다.
+생성형 AI 도입 관련 부서 회의가 진행되었으며, 그 내용은 텍스트 파일로 첨부했습니다.
+회의록에는 일시, 참석자, 주요 안건, 논의 요지, 결정사항을 포함하여 항목별로 정리해주세요.
+객관적이고 간결한 업무 문서 스타일로 작성해주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<!-- ================= 5교시 ================= -->
+<div class="grp-title" data-grp="5교시 · OA 자동화 (엑셀 · PPT)">5교시 · OA 자동화 (엑셀 · PPT)</div>
+
+<section class="ex" id="p198" data-pg="198" data-title="실습용 더미 데이터 만들기" data-badge="실습 12">
+  <div class="ex-head"><span class="badge acc">실습 12</span><span class="pgref">강의안 p.198</span></div>
+  <h2>실습용 데이터부터 만듭니다</h2>
+  <p class="desc">다운로드 받은 이 파일 하나로 앞으로 8개의 실습을 전부 진행합니다. 다운로드가 안 되면 강사가 배포한 예비 파일을 사용하세요.</p>
+  <div class="warn">※ 실제 직원 데이터는 절대 올리지 마세요 — 그래서 가짜 데이터를 만드는 것입니다.</div>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 더미 데이터 생성</div>
+    <pre>당신은 엑셀 전문가입니다.
+엑셀에서 테스트 할 수 있는 더미 데이터를 생성해 주세요.
+이름, 부서, 월급, 성과점수, 입사일, 근무일수, 핸드폰번호, 이메일, 주민번호 컬럼으로 구성해주세요.
+행 데이터는 10건 생성해 주세요.
+엑셀파일로 생성해 주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p199" data-pg="199" data-title="함수 4종 — SUM·AVERAGE·COUNTA·IF" data-badge="실습 13">
+  <div class="ex-head"><span class="badge acc">실습 13</span><span class="pgref">강의안 p.199</span></div>
+  <h2>함수 4종 — SUM · AVERAGE · COUNTA · IF</h2>
+  <p class="desc">함수 이름을 몰라도 됩니다 — "하고 싶은 일 + 위치"만 말하세요. [공통] 문장을 먼저 입력하고 필요한 질문을 이어서 붙이세요.</p>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 함수 질문 4종</div>
+    <pre>[공통] 당신은 엑셀 전문가입니다. 저는 엑셀 함수를 배우고자 합니다.
+
+[SUM] 엑셀에서 직원들 월급을 더하고 싶어요.
+직원들 월급은 C열에 C2부터 C11까지 들어 있어요.
+
+[AVERAGE] 직원들의 성과점수 평균을 구하고 싶어요.
+성과점수는 D열에 D2부터 D11까지 들어 있어요.
+
+[COUNTA] 직원 이름이 몇 명이나 입력되어 있는지 알고 싶어요.
+이름은 A2부터 A11까지 들어 있어요.
+
+[IF] 성과점수가 80점 이상이면 "우수", 아니면 "보통"으로 표시하고 싶어요.
+성과점수는 D열 D2부터 D11까지 있어요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p200" data-pg="200" data-title="함수 4종 — MAX·MIN·CONCAT·TEXT" data-badge="실습 14">
+  <div class="ex-head"><span class="badge acc">실습 14</span><span class="pgref">강의안 p.200</span></div>
+  <h2>함수 4종 — MAX · MIN · CONCAT · TEXT</h2>
+  <p class="desc">같은 요령으로 네 가지를 더 물어봅니다.</p>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 함수 질문 4종</div>
+    <pre>[MAX] 직원들 중에 월급이 가장 많은 사람이 누구인지 알고 싶어요.
+월급은 C열 C2부터 C11까지 있어요.
+
+[MIN] 직원들 중에서 성과점수가 가장 낮은 사람이 궁금해요.
+성과점수는 D열 D2부터 D11까지 있어요.
+
+[CONCAT] 이름(A열)과 부서(B열)를 한 셀에 붙이고 싶어요.
+예: 「김민준 - 인사」 이런 식으로요.
+
+[TEXT] 입사일(E2:E11)이 2018-01-01 형식인데
+「2018년 1월 1일」처럼 보이게 바꾸고 싶어요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p201" data-pg="201" data-title="피벗 테이블 — 설계까지 AI가" data-badge="실습 15">
+  <div class="ex-head"><span class="badge acc">실습 15</span><span class="pgref">강의안 p.201</span></div>
+  <h2>피벗 테이블 — 설계까지 AI가 해줍니다</h2>
+  <p class="desc">"어떤 걸 봐야 할지 모르겠다"에 대한 답을 AI가 먼저 제안합니다.</p>
+  <ol class="steps">
+    <li>ChatGPT에 엑셀 파일을 첨부하고 아래 프롬프트 입력</li>
+    <li>추천받은 피벗 구성을 보고 엑셀로 돌아오기</li>
+    <li><b>Ctrl + A</b>로 데이터 전체 선택</li>
+    <li>삽입 &gt; 피벗테이블 &gt; 새 워크시트 선택</li>
+    <li>ChatGPT가 알려준 행·열·값 구성을 그대로 끌어다 놓기</li>
+  </ol>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 엑셀 파일 첨부 후</div>
+    <pre>당신은 엑셀 베테랑 전문가입니다.
+첨부된 엑셀 데이터를 기반으로 어떤 피벗 테이블을 만들면 좋을까요?</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p202" data-pg="202" data-title="이메일에서 아이디·회사명 추출" data-badge="실습 16">
+  <div class="ex-head"><span class="badge acc">실습 16</span><span class="pgref">강의안 p.202</span></div>
+  <h2>이메일에서 아이디 · 회사명 추출</h2>
+  <p class="desc">실무 치환 — 거래처 명단 정리, 수신자 목록 분류, 도메인별 고객 집계에 그대로 쓰입니다.</p>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 함수 요청</div>
+    <pre>이메일 H열에 있는 이메일을 읽어서 아이디와 회사명을 추출하고 싶습니다.
+H2에서 H11열에 있는 이메일을 읽어 아이디와 회사명을 추출하는 함수를 알려주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <div class="prompt">
+    <div class="plabel">참고 · AI가 알려준 수식</div>
+    <pre>=LEFT(H2, FIND("@", H2)-1)
+
+=LEFT(MID(H2, FIND("@",H2)+1, LEN(H2)), FIND(".", MID(H2, FIND("@",H2)+1, LEN(H2)))-1)</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p203" data-pg="203" data-title="주민번호 뒷자리 마스킹" data-badge="실습 17">
+  <div class="ex-head"><span class="badge acc">실습 17</span><span class="pgref">강의안 p.203</span></div>
+  <h2>주민번호 뒷자리 마스킹</h2>
+  <p class="desc">여기서 보안 이야기를 한 번 짚고 갑니다.</p>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 함수 요청</div>
+    <pre>주민번호 I열에 있는 주민번호 뒷자리를 *******로 마스킹 처리를 하려고 합니다.
+I2에서 I11열에 있는 주민번호 뒷자리를 마스킹할 수 있는 함수를 알려주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <div class="prompt">
+    <div class="plabel">참고 · AI가 알려준 수식</div>
+    <pre>=LEFT(I2, 6) &amp; "-*******"</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <div class="warn">⚠ 지금 이 데이터가 우리 회사 실제 직원 명부였다면? ChatGPT에 올리는 순간 외부 서버로 전송됩니다. 반드시 가짜(익명) 데이터로만 실습하세요.</div>
+</section>
+
+<section class="ex" id="p204" data-pg="204" data-title="VBA 매크로 — 반복 업무 통째로" data-badge="실습 18">
+  <div class="ex-head"><span class="badge acc">실습 18</span><span class="pgref">강의안 p.204</span></div>
+  <h2>VBA 매크로 — 반복 업무를 통째로</h2>
+  <p class="desc">ChatGPT에게 하고 싶은 일을 말로 설명하고, 받은 코드를 붙여넣기만 하면 됩니다.</p>
+  <ol class="steps">
+    <li>아래 프롬프트로 코드 요청 → 받은 코드 복사</li>
+    <li>엑셀 &gt; 개발 도구 탭 &gt; Visual Basic (또는 <b>Alt + F11</b>)</li>
+    <li>삽입 &gt; 모듈 &gt; 코드 붙여넣기</li>
+    <li><b>F5</b> 또는 실행 버튼</li>
+  </ol>
+  <div class="prompt">
+    <div class="plabel">프롬프트 ① · 월별 시트 자동 생성</div>
+    <pre>1월~12월 시트를 자동으로 만들고,
+각 시트에 동일한 헤더를 깔아주는
+VBA 매크로 코드를 작성해줘.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <div class="prompt">
+    <div class="plabel">프롬프트 ② · 주민번호 일괄 마스킹</div>
+    <pre>I열의 주민번호 뒷자리를 전부 마스킹 처리하는
+VBA 매크로 코드를 작성해줘.
+초보자도 따라할 수 있게 실행 방법도 알려줘.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <p class="tip"><b>팁</b> — 개발 도구 탭이 안 보이면: 파일 &gt; 옵션 &gt; 리본 사용자 지정 &gt; 개발 도구 체크</p>
+</section>
+
+<section class="ex" id="p205" data-pg="205" data-title="데이터 분석 — 근속연수·퇴사율" data-badge="실습 19">
+  <div class="ex-head"><span class="badge acc">실습 19</span><span class="pgref">강의안 p.205</span></div>
+  <h2>데이터 분석 — 근속연수 · 퇴사율</h2>
+  <p class="desc">인사·총무 담당자가 매년 만드는 그 자료. ChatGPT가 직접 계산하고 그래프까지 그려 줍니다 — 엑셀 차트를 만들 필요가 없습니다. ※ 반드시 익명 처리된 데이터로 하세요.</p>
+  <div class="prompt">
+    <div class="plabel">1단계 · 역할과 목적을 먼저 (파일 첨부)</div>
+    <pre>너는 데이터 분석 전문가야.
+내가 첨부한 파일을 분석해서 데이터를 시각화 하는 작업을 할 거야.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <div class="prompt">
+    <div class="plabel">2단계 · 구체적인 분석 요청</div>
+    <pre>입사년도별 근속연수 및 퇴사율을 분석해서 그래프로 만들어줘.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p207" data-pg="207" data-title="ChatGPT 안에서 PPT 파일 받기" data-badge="실습 20">
+  <div class="ex-head"><span class="badge acc">실습 20</span><span class="pgref">강의안 p.206–207</span></div>
+  <h2>ChatGPT 안에서 PPT 파일까지 받기</h2>
+  <p class="desc">외부 도구 없이, 대화 하나로 슬라이드와 발표 스크립트까지 만듭니다. 무엇부터 물어야 할지 모르겠다면 이 한 줄로 시작하세요 — "당신은 발표 디자이너입니다. 주제 [○○○], 청중 [임원 6명], 시간 [10분]. 슬라이드별 제목과 핵심 문장을 먼저 잡아주세요."</p>
+  <div class="prompt">
+    <div class="plabel">1단계 · 우리 회사 디자인 시스템 만들기 (로고 파일 첨부)</div>
+    <pre>당신은 30년차 디자인 전문가 입니다.
+첨부된 파일은 [회사명] 회사 로고 입니다.
+회사 로고와 첨부된 디자인 시스템 스타일을 참고해서 [회사명] 디자인 시스템을 생성해 주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <div class="prompt">
+    <div class="plabel">2단계 · 자료 조사 + 슬라이드 생성</div>
+    <pre>당신은 자료조사 전문가이자 파워포인트 작성 전문가입니다.
+[회사명] 주요 이슈 5가지를 웹에서 검색해서 작성해 주세요.
+이슈 1번을 해결할 수 있는 전략을 작성해 주세요.
+해당 전략을 과장님에게 발표하고 싶습니다. 첨부된 디자인 시스템을 참고하세요.
+파워포인트 슬라이드를 작성하고 링크로 다운로드 받을 수 있게 해주세요.
+발표 스크립트도 작성해 주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p210" data-pg="210" data-title="내 엑셀 업무 1건 자동화" data-badge="실습 21">
+  <div class="ex-head"><span class="badge acc">실습 21</span><span class="pgref">강의안 p.210</span></div>
+  <h2>내 엑셀 업무 1건 자동화</h2>
+  <p class="desc">평소 손으로 하던 엑셀 작업 1가지를 골라 AI로 처리하고, 절약한 시간을 숫자로 적어 주세요. 제출 — 패들렛 「5교시 · 엑셀 자동화」 · 형식 「이름 / 작업명 / 기존 30분 → AI 3분」</p>
+  <ol class="steps">
+    <li>평소 하는 엑셀 작업 1개 고르기 — 함수 · 정렬 · 집계 · 매크로 (3분)</li>
+    <li>ChatGPT에 물어보고 실제로 적용해 보기 (12분)</li>
+    <li>결과 캡처 + 절약한 시간 기록 (5분)</li>
+  </ol>
+  <div class="warn">실제 데이터를 올리지 마세요. 컬럼 이름과 구조만 설명하거나, 익명 처리한 샘플로 물어보세요.</div>
+</section>
+
+<!-- ================= 6교시 ================= -->
+<div class="grp-title" data-grp="6교시 · 카드뉴스 제작">6교시 · 카드뉴스 제작</div>
+
+<section class="ex" id="p212" data-pg="212" data-title="카드뉴스 제작 플로우" data-badge="직접 실습">
+  <div class="ex-head"><span class="badge">직접 실습</span><span class="pgref">강의안 p.212·215</span></div>
+  <h2>카드뉴스 제작 플로우 한눈에</h2>
+  <p class="desc">여섯 단계를 도구 하나씩 연결해 완성합니다. 오늘은 ①~⑤를 직접 실습합니다.</p>
+  <ol class="steps">
+    <li>문구 작성 — ChatGPT</li>
+    <li>이미지 생성 — ChatGPT</li>
+    <li>PPT 편집 — 파워포인트</li>
+    <li>응원송(테마송·배경음악) 제작 — Suno</li>
+    <li>더빙 — 클로바더빙</li>
+    <li>영상 합성 — CapCut</li>
+  </ol>
+</section>
+
+<section class="ex" id="p216" data-pg="216" data-title="카드뉴스 문구 프롬프트" data-badge="직접 실습 ①">
+  <div class="ex-head"><span class="badge">직접 실습 ①</span><span class="pgref">강의안 p.216</span></div>
+  <h2>카드뉴스 문구 만들기</h2>
+  <p class="desc">주제는 우리 회사·부서 홍보로 바꿔서 진행하세요.</p>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 카드뉴스 텍스트 5장</div>
+    <pre>당신은 공공기관 홍보 콘텐츠 담당자입니다.
+일반 시민에게 생성형 AI의 개념과 활용 예시를 소개하기 위한 카드뉴스를 제작하려고 합니다.
+생성형 AI 소개를 주제로 카드뉴스 텍스트 5장 분량을 작성해주세요.
+각 장마다 제목, 설명 문구(2~3줄), 일러스트 설명을 포함해주세요.
+친근하고 쉽게 이해할 수 있는 말투로 작성해주세요.
+일러스트 설명을 GPT Image 1.5 프롬프트로 재구성 해 주세요. 한글로 작성해 주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p213" data-pg="213" data-title="카드뉴스 이미지 5장 생성" data-badge="직접 실습 ②">
+  <div class="ex-head"><span class="badge">직접 실습 ②</span><span class="pgref">강의안 p.213</span></div>
+  <h2>문구와 이미지를 한 번에 — 이미지 5장 생성</h2>
+  <p class="desc">앞에서 만든 카드뉴스 텍스트를 그대로 이어서 사용합니다. 소요 약 12분.</p>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 이미지 생성</div>
+    <pre>당신은 공공기관 홍보 콘텐츠 담당자입니다. 일반 시민에게 생성형 AI의 개념과 활용 예시를 소개하기 위한 카드뉴스를 제작하려고 합니다.
+
+위 내용을 참조하여 총 5장 이미지를 생성해주세요.
+비율은 1:1비율, 1장씩 생성, 총 5장을 만들어주세요.
+귀여운 AI캐릭터와 일러스트 느낌의 인물, 배경으로 디자인해주세요.
+각 장마다 이미지 아래에 해당 카드의 문구를 2줄로 요약해서 텍스트로 추가해주세요.
+친근하고 쉽게 이해할 수 있는 말투로 한글로 작성해주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p214" data-pg="214" data-title="성우 대본 제작" data-badge="직접 실습 ③">
+  <div class="ex-head"><span class="badge">직접 실습 ③</span><span class="pgref">강의안 p.214</span></div>
+  <h2>성우 대본 제작</h2>
+  <p class="desc">더빙(클로바더빙)에 쓸 장면별 대본을 만들어 둡니다.</p>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 성우 대본</div>
+    <pre>각 장면을 카드뉴스로 성우가 읽도록 장별로 대본을 만들어주세요.
+대본 각 장면별로 구분해서 별도 텍스트 파일로 보관해주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p217" data-pg="217" data-title="테마송 만들기 (Suno Custom)" data-badge="직접 실습 ④">
+  <div class="ex-head"><span class="badge">직접 실습 ④</span><span class="pgref">강의안 p.217</span></div>
+  <h2>카드뉴스 테마송 생성 — Suno Custom</h2>
+  <p class="desc">suno.com 접속 → Custom 모드. 아래 프롬프트로 ChatGPT에서 노래 제목·스타일·가사를 먼저 받아 붙여넣습니다.</p>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 테마송 가사 요청 (ChatGPT)</div>
+    <pre>당신은 Suno 프롬프트 작성 전문가입니다.
+저는 지금까지 작성한 카드뉴스에 어울리는 테마송을 제작하려고 합니다.
+Suno의 Custom 모드를 활용할 예정이며, 노래 제목, 노래 스타일, 가사를 작성해 주세요.
+단, Suno 무료 요금제 기준(약 80초)을 초과하지 않도록 가사를 작성해 주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p218" data-pg="218" data-title="배경음악 만들기 (Suno Simple)" data-badge="직접 실습 ⑤">
+  <div class="ex-head"><span class="badge">직접 실습 ⑤</span><span class="pgref">강의안 p.218–220</span></div>
+  <h2>카드뉴스 배경음악 생성 — Suno Simple</h2>
+  <p class="desc">suno.com → Simple 모드에 스타일 프롬프트를 입력하고, 완성되면 mp3 파일로 다운로드합니다(무료 버전은 light 파일).</p>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · BGM 프롬프트 요청 (ChatGPT)</div>
+    <pre>당신은 Suno 프롬프트 전문가입니다.
+저는 지금까지 작성한 카드뉴스에 어울리는 배경음악을 가사 없이 만들고 싶습니다.
+Suno의 Simple 모드를 사용할 예정입니다.
+Suno 프롬프트 200자 이내로 작성해 주세요.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <div class="prompt">
+    <div class="plabel">예시 · Suno에 입력하는 스타일</div>
+    <pre>acoustic guitar, soft piano, light percussion, bright, uplifting, calm, background music, instrumental</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<section class="ex" id="p221" data-pg="221" data-title="더빙·영상 합성 (클로바더빙·CapCut)" data-badge="참고">
+  <div class="ex-head"><span class="badge">참고</span><span class="pgref">강의안 p.221–228</span></div>
+  <h2>더빙과 영상 편집은 이렇게 하시면 됩니다</h2>
+  <p class="desc">시간상 재료 준비까지가 오늘의 실습입니다. 아래 순서대로 하면 완성 — 상세 가이드는 오픈채팅방 공지 링크를 참고하세요.</p>
+  <ol class="steps">
+    <li><b>클로바더빙</b> (clovadubbing.naver.com) — 새 프로젝트 생성(동영상 또는 이미지 선택)</li>
+    <li>만든 카드뉴스 이미지 업로드 → 각 장의 문구(성우 대본)를 붙여넣고 목소리 선택</li>
+    <li>[더빙 추가] 클릭 → 타임라인 배치 → 다운로드 (장면 바뀌는 구간은 시간을 늘려 주세요)</li>
+    <li><b>CapCut</b> (capcut.com, PC·모바일) — 프로젝트 생성 후 카드뉴스 이미지 5장 불러오기</li>
+    <li>더빙 음성 트랙 + Suno BGM 추가 → 자막·장면 전환 효과</li>
+    <li>사진·음악 길이 조절 → 내보내기 (1080×1080 정사각형) → 인스타그램·사내 게시판에 게시</li>
+  </ol>
+</section>
+
+<section class="ex" id="p227" data-pg="227" data-title="SUNO로 K-POP 작곡하기" data-badge="실습 22">
+  <div class="ex-head"><span class="badge acc">실습 22</span><span class="pgref">강의안 p.227</span></div>
+  <h2>SUNO로 K-POP 작곡하기</h2>
+  <p class="desc">가사부터 완성곡까지 10분이면 충분합니다.</p>
+  <ol class="steps">
+    <li>ChatGPT에서 가사 제작 — 아래 프롬프트 활용</li>
+    <li>SUNO에서 가사 및 STYLE 입력</li>
+    <li>제작 후 MP3 파일로 저장</li>
+  </ol>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 가사 제작 (ChatGPT)</div>
+    <pre>Suno에 사용할 K-POP 노래 가사를 적어줘.
+주제는 [우리 회사/부서 응원송], 밝고 신나는 분위기로.
+Suno 무료 요금제 기준(약 80초)을 넘지 않는 분량으로 작성해줘.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<!-- ================= 7교시 ================= -->
+<div class="grp-title" data-grp="7교시 · Vibe Coding">7교시 · Vibe Coding</div>
+
+<section class="ex" id="p236" data-pg="236" data-title="To-Do 앱 만들고 링크 복사" data-badge="실습 23">
+  <div class="ex-head"><span class="badge acc">실습 23</span><span class="pgref">강의안 p.236</span></div>
+  <h2>To-Do List 앱 만들고, 링크 복사하기</h2>
+  <p class="desc">Google AI Studio Build로 코딩 없이 나만의 웹앱을 만듭니다.</p>
+  <ol class="steps">
+    <li>Google AI Studio 좌측 메뉴에서 <b>[ + New app ]</b> 클릭</li>
+    <li>화면 중앙 "Describe an app…" 입력창에 프롬프트 입력</li>
+    <li>엔터 — AI가 즉시 코드를 작성하며 앱을 완성</li>
+    <li>완성되면 우측 상단 <b>[ 공유(Share) ]</b> 또는 <b>[ 링크(Link) ]</b> 아이콘 클릭</li>
+    <li>생성된 앱의 전용 URL 복사</li>
+  </ol>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 한 줄 버전</div>
+    <pre>todolist 만들어줘!</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <div class="prompt">
+    <div class="plabel">프롬프트 · 더 구체적으로 쓰고 싶다면</div>
+    <pre>나만의 To-Do List 웹앱을 만들어줘. 할 일 추가·완료 체크·삭제가 되고, 오늘 날짜와 완료율(%)이 위에 보이게. 우선순위(높음/보통/낮음)를 색으로 구분하고, 화이트 배경에 깔끔한 디자인으로. 모바일에서도 잘 보이게.</pre>
+    <button class="copybtn">복사</button>
+  </div>
+  <p class="tip"><b>팁</b> — 디자인 이미지를 함께 첨부하려면 입력창 좌측 하단 <b>+</b> 아이콘.</p>
+</section>
+
+<section class="ex" id="p238" data-pg="238" data-title="패들렛에 내 앱 공유하기" data-badge="실습 24">
+  <div class="ex-head"><span class="badge acc">실습 24</span><span class="pgref">강의안 p.238–239</span></div>
+  <h2>패들렛에 게시하고, 내 앱 열어보기</h2>
+  <p class="desc">STEP 1~2에서 앱을 만들고 링크를 복사했다면(7분), 내 업무에 맞게 기능 1가지를 추가하고(5분), 패들렛에 공유해 다 함께 열어봅니다(6분). 제출 — 패들렛 「7교시 · 나만의 To-Do 앱」 · 제목 「이름 / 내가 추가한 기능」</p>
+  <ol class="steps">
+    <li>공유할 패들렛 보드 접속 (padlet.com/starkj79/ai)</li>
+    <li>빈 바탕화면 더블 클릭 또는 우측 하단 <b>[ + ]</b> → 새 게시물 창</li>
+    <li>입력창 하단 <b>[ 🔗 링크 아이콘 ]</b> 클릭 → 복사한 앱 URL 붙여넣고 엔터</li>
+    <li>제목 입력 — 「이름 + 내가 추가한 기능」 (예: 홍광준 / 거래처별 분류 추가) → <b>[ 발행 ]</b></li>
+    <li>발행된 내 게시물의 링크 상자 클릭 → 새 탭에서 내 앱 실행, 바로 할 일 입력해 보기</li>
+  </ol>
+  <div class="prompt">
+    <div class="plabel">기능 추가 요청 예시 (AI Studio 입력창)</div>
+    <pre>거래처별로 분류해줘
+마감일 입력을 추가해줘
+완료하면 축하 메시지를 띄워줘</pre>
+    <button class="copybtn">복사</button>
+  </div>
+</section>
+
+<footer>
+  생성형 AI로 끝내는 #칼퇴 솔루션 · 실습 가이드북 v1.0 · 2026. 9. 2. 안성상공회의소 · 강사 홍광준<br>
+  ⚠ 모든 실습은 개인정보·내부 문서가 아닌 <b>가짜(익명) 데이터</b>로 진행하세요. AI에 입력한 정보는 외부 서버로 전송될 수 있습니다.
+</footer>
+
+</main>
+</div>
+
+<div id="toast">복사되었습니다</div>
+
+<script>
+// ---------- build TOC ----------
+(function(){
+  var root=document.getElementById('tocRoot');
+  var grp=null, list=null;
+  document.querySelectorAll('#content > *').forEach(function(el){
+    if(el.classList.contains('grp-title')){
+      grp=document.createElement('div'); grp.className='navgrp';
+      var h=document.createElement('h4'); h.textContent=el.dataset.grp||el.textContent; grp.appendChild(h);
+      root.appendChild(grp); list=grp;
+    }else if(el.classList.contains('ex') && list){
+      var a=document.createElement('a'); a.href='#'+el.id;
+      a.innerHTML='<span class="pg">p.'+el.dataset.pg+'</span><span>'+el.dataset.title+'</span>';
+      a.dataset.target=el.id;
+      a.addEventListener('click',function(){ document.getElementById('sidebar').classList.remove('open'); });
+      list.appendChild(a);
+    }
+  });
+})();
+// ---------- active highlight ----------
+(function(){
+  var links={};
+  document.querySelectorAll('nav a[data-target]').forEach(function(a){ links[a.dataset.target]=a; });
+  var obs=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){
+        Object.values(links).forEach(function(a){a.classList.remove('on');});
+        var a=links[e.target.id]; if(a){a.classList.add('on');}
+      }
+    });
+  },{rootMargin:'-10% 0px -70% 0px'});
+  document.querySelectorAll('section.ex').forEach(function(s){obs.observe(s);});
+})();
+// ---------- copy ----------
+function showToast(msg){
+  var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._h); t._h=setTimeout(function(){t.classList.remove('show');},1600);
+}
+function copyText(txt, btn){
+  function ok(){ if(btn){btn.classList.add('done'); btn.textContent='복사됨 ✓';
+      setTimeout(function(){btn.classList.remove('done'); btn.textContent='복사';},1500);}
+    showToast('클립보드에 복사되었습니다'); }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(ok).catch(function(){fallback();});
+  }else{fallback();}
+  function fallback(){
+    var ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); ok(); }catch(e){ showToast('복사에 실패했습니다'); }
+    document.body.removeChild(ta);
+  }
+}
+document.querySelectorAll('.copybtn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var card=btn.closest('.prompt');
+    var label=card.querySelector('.plabel').textContent.trim();
+    var body=card.querySelector('pre').textContent.trim();
+    var sec=btn.closest('section.ex');
+    var md='## '+(sec.dataset.badge?('['+sec.dataset.badge+'] '):'')+sec.dataset.title+' (강의안 p.'+sec.dataset.pg+')\n\n'
+          +'**'+label+'**\n\n```\n'+body+'\n```\n';
+    copyText(md, btn);
+  });
+});
+// ---------- full md download ----------
+function downloadAllMd(){
+  var md='# 생성형 AI로 끝내는 #칼퇴 솔루션 — 실습 프롬프트 모음\n\n'
+        +'> 2026. 9. 2. 안성상공회의소 · 강사 홍광준 · 페이지 번호는 강의안(v3.1) 기준\n\n';
+  var grp='';
+  document.querySelectorAll('#content > *').forEach(function(el){
+    if(el.classList.contains('grp-title')){ md+='\n---\n\n# '+el.textContent.trim()+'\n\n'; }
+    else if(el.classList.contains('ex')){
+      md+='## '+(el.dataset.badge?('['+el.dataset.badge+'] '):'')+el.dataset.title+' (강의안 p.'+el.dataset.pg+')\n\n';
+      var d=el.querySelector('.desc'); if(d){ md+=d.textContent.trim()+'\n\n'; }
+      el.querySelectorAll('.prompt').forEach(function(p){
+        md+='**'+p.querySelector('.plabel').textContent.trim()+'**\n\n```\n'
+           +p.querySelector('pre').textContent.trim()+'\n```\n\n';
+      });
+    }
+  });
+  saveMd(md,'칼퇴솔루션_실습_프롬프트.md');
+}
+// 저장 통로 두 가지 — 어디서 열든 동작하게 한다.
+//   · claude.ai 아티팩트: a[download] 와 blob: 이 막혀 있어 전용 통로를 쓴다.
+//   · 로컬 파일 · GitHub Pages · 사내 서버: 기존 방식 그대로.
+function saveMd(md, name){
+  if(window.claude && typeof claude.use==='function'){
+    claude.use('downloads').then(function(dl){
+      if(!dl){ saveMdFallback(md,name); return; }
+      dl.save({filename:name, data:md}).then(function(){
+        showToast('.md 파일을 저장했습니다');
+      }).catch(function(e){
+        showToast(e && e.code==='declined' ? '저장을 취소했습니다' : '저장하지 못했습니다');
+      });
+    }).catch(function(){ saveMdFallback(md,name); });
+    return;
+  }
+  saveMdFallback(md,name);
+}
+function saveMdFallback(md, name){
+  var blob=new Blob([md],{type:'text/markdown;charset=utf-8'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download=name; document.body.appendChild(a); a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href); a.remove();},500);
+  showToast('.md 파일을 다운로드했습니다');
+}
+// ---------- mobile nav ----------
+document.getElementById('navToggle').addEventListener('click',function(){
+  document.getElementById('sidebar').classList.toggle('open');
+});
+</script>
+</body>
+</html>
