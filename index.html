@@ -4,10 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>#칼퇴 솔루션 실습 가이드북</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700;800&display=swap">
 <style>
+@font-face { font-family:'Paperlogy'; font-weight:400; font-display:swap; src:url('fonts/Paperlogy-4Regular.woff2') format('woff2'); }
+@font-face { font-family:'Paperlogy'; font-weight:500; font-display:swap; src:url('fonts/Paperlogy-5Medium.woff2') format('woff2'); }
+@font-face { font-family:'Paperlogy'; font-weight:600; font-display:swap; src:url('fonts/Paperlogy-6SemiBold.woff2') format('woff2'); }
+@font-face { font-family:'Paperlogy'; font-weight:700; font-display:swap; src:url('fonts/Paperlogy-7Bold.woff2') format('woff2'); }
+@font-face { font-family:'Paperlogy'; font-weight:800; font-display:swap; src:url('fonts/Paperlogy-8ExtraBold.woff2') format('woff2'); }
+
 
 :root{
   --ink:#191919; --sub:#6b6b6b; --line:#e8e6e1; --bg:#ffffff; --paper:#faf9f7;
@@ -16,7 +19,7 @@
 *{box-sizing:border-box; margin:0; padding:0;}
 html{scroll-behavior:smooth;}
 body{
-  font-family:'Gothic A1','Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  font-family:'Paperlogy','Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
   font-weight:400; color:var(--ink); background:var(--bg); line-height:1.65; font-size:15px;
 }
 /* ---------- layout ---------- */
@@ -151,7 +154,7 @@ footer{margin-top:80px; padding-top:20px; border-top:1px solid var(--line); font
 <nav id="sidebar">
   <div class="brand">
     <div class="t1">생성형 AI로 끝내는 <em>#칼퇴</em> 솔루션</div>
-    <div class="t2">실습 가이드북 · 안성상공회의소 · 2026. 9. 2.</div>
+    <div class="t2">실습 가이드북</div>
   </div>
   <div id="tocRoot"></div>
 </nav>
@@ -161,7 +164,7 @@ footer{margin-top:80px; padding-top:20px; border-top:1px solid var(--line); font
 <header class="hero">
   <div class="kicker">HANDS-ON GUIDEBOOK</div>
   <h1>생성형 AI로 끝내는 <em>#칼퇴</em> 솔루션<br>실습 가이드북</h1>
-  <div class="meta"><b>2026. 9. 2. (수)</b> · 안성상공회의소 · 강사 <b>홍광준</b> (AI 혁신 컨설턴트)</div>
+  <div class="meta">강사 <b>홍광준</b> (AI 혁신 컨설턴트)</div>
   <div class="toolbar">
     <button class="btn primary" onclick="downloadAllMd()">전체 프롬프트 .md 다운로드</button>
     <button class="btn" onclick="window.print()">인쇄 / PDF 저장</button>
@@ -788,7 +791,7 @@ Suno 무료 요금제 기준(약 80초)을 넘지 않는 분량으로 작성해�
 </section>
 
 <footer>
-  생성형 AI로 끝내는 #칼퇴 솔루션 · 실습 가이드북 v1.0 · 2026. 9. 2. 안성상공회의소 · 강사 홍광준<br>
+  생성형 AI로 끝내는 #칼퇴 솔루션 · 실습 가이드북 v1.0 · 강사 홍광준<br>
   ⚠ 모든 실습은 개인정보·내부 문서가 아닌 <b>가짜(익명) 데이터</b>로 진행하세요. AI에 입력한 정보는 외부 서버로 전송될 수 있습니다.
 </footer>
 
@@ -863,7 +866,7 @@ document.querySelectorAll('.copybtn').forEach(function(btn){
 // ---------- full md download ----------
 function downloadAllMd(){
   var md='# 생성형 AI로 끝내는 #칼퇴 솔루션 — 실습 프롬프트 모음\n\n'
-        +'> 2026. 9. 2. 안성상공회의소 · 강사 홍광준 · 페이지 번호는 강의안(v3.1) 기준\n\n';
+        +'> 강사 홍광준 · 페이지 번호는 강의안(v3.1) 기준\n\n';
   var grp='';
   document.querySelectorAll('#content > *').forEach(function(el){
     if(el.classList.contains('grp-title')){ md+='\n---\n\n# '+el.textContent.trim()+'\n\n'; }
